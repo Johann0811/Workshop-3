@@ -377,11 +377,7 @@ docker compose exec postgres psql -P pager=off -U happiness -d happiness_db -c "
 docker compose exec postgres psql -P pager=off -U happiness -d happiness_db -c "SELECT kafka_partition, COUNT(DISTINCT kafka_key) AS keys, COUNT(*) AS events FROM raw_happiness_events GROUP BY kafka_partition ORDER BY kafka_partition;"
 ```
 
-### 6. Dashboard
-
-Follow `dashboards/README.md`.
-
-### 7. Tests
+### 6. Tests
 
 ```powershell
 python -m unittest discover -s tests -v
@@ -390,11 +386,11 @@ python -m unittest discover -s tests -v
 ### Stop and reset
 
 ```powershell
-docker compose down        # stops containers; PostgreSQL data is kept in a volume
-docker compose down -v     # also deletes the PostgreSQL volume: a clean start
+docker compose down        # Stops containers
+docker compose down -v     # Delete volumes
 ```
 
-Kafka data is **not** kept after `docker compose down` (single-broker teaching environment without a volume), but PostgreSQL data is. Do not restart the pipeline in that state: Kafka offsets restart at 0 and the consumer reports every message as `SKIPPED_REDELIVERED`, because the same topic, partition and offset are already stored. Always use `docker compose down -v` for a clean start. Re-running the producer while the containers are still running is fine: the new messages get new offsets, and the repeated `event_id`s are stored as `DUPLICATE_EVENT` without creating new predictions.
+Re-running the producer while the containers are still running: the new messages get new offsets, and the repeated `event_id`s are stored as `DUPLICATE_EVENT` without creating new predictions.
 
 ---
 

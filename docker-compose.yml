@@ -1,26 +1,24 @@
-# Local teaching environment: ONE Kafka broker (KRaft, no ZooKeeper) + PostgreSQL.
-# Python (producer, consumer, notebooks) runs on the host and connects through the published ports.
 services:
   kafka:
     image: apache/kafka:4.4.0
     container_name: happiness-kafka
+    user: root
     ports:
       - "9092:9092"
-    # The topic `happiness-events` (3 partitions, replication factor 1) is created by
-    # kafka/producer.py and kafka/consumer.py when it does not exist yet.
+    volumes:
+      - kafka_data:/tmp/kraft-combined-logs
 
   postgres:
     image: postgres:16
     container_name: happiness-postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-happiness}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-happiness}   # local teaching credentials only
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-happiness} 
       POSTGRES_DB: ${POSTGRES_DB:-happiness_db}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      # Scripts in this folder run once, the first time the (empty) data volume is created.
       - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/01_create_tables.sql:ro
       - ./sql/kpis.sql:/docker-entrypoint-initdb.d/02_kpis.sql:ro
     healthcheck:
@@ -30,4 +28,5 @@ services:
       retries: 10
 
 volumes:
+  kafka_data:
   postgres_data:

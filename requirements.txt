@@ -1,0 +1,13 @@
+# Core stack required by the workshop: Python, Apache Kafka (client), Pandas, Scikit-learn, SQL database.
+# Versions are pinned to the ones used to train models/model.pkl, because a pickled scikit-learn
+# Pipeline must be loaded with the same scikit-learn version that created it. Python 3.12 recommended.
+pandas==3.0.2
+numpy==2.4.4
+scikit-learn==1.8.0
+scipy==1.17.1
+confluent-kafka==2.16.1        # Kafka producer/consumer client (same library used in the class labs)
+psycopg2-binary==2.9.13        # PostgreSQL driver
+
+# Notebooks (pandas uses matplotlib as its plotting backend)
+matplotlib==3.10.8
+ipykernel==7.4.0

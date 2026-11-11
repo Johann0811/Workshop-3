@@ -1,0 +1,30 @@
+{
+  "model": "Linear Regression",
+  "pipeline_steps": [
+    "scaler",
+    "model"
+  ],
+  "features": [
+    "gdp",
+    "family",
+    "health",
+    "freedom",
+    "generosity",
+    "corruption"
+  ],
+  "target": "happiness_score",
+  "random_state": 42,
+  "split": {
+    "strategy": "GroupShuffleSplit by country",
+    "test_size": 0.3,
+    "train_rows": 542,
+    "test_rows": 240
+  },
+  "cv_rmse_train": 0.567,
+  "test_metrics": {
+    "MAE": 0.4319,
+    "RMSE": 0.5619,
+    "R2": 0.7838
+  },
+  "scikit_learn_version": "1.8.0"
+}

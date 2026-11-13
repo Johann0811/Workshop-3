@@ -400,7 +400,8 @@ Re-running the producer while the containers are still running: the new messages
 |---|---|
 | `Kafka is not reachable at localhost:9092` | Container not running yet: `docker compose ps`, then wait a few seconds |
 | `Topic 'happiness-events' exists with 1 partitions but 3 are required` | The topic was auto-created by another client. `docker compose down -v` and start again |
-| Every message is reported as `SKIPPED_REDELIVERED` | Kafka was restarted but PostgreSQL kept its data. `docker compose down -v` and start again |
+| Every message is reported as `SKIPPED_REDELIVERED` | Kafka was reset but PostgreSQL kept its data. `docker compose down -v` and start again |
+| The `kafka` container exits right after starting | Read `docker compose logs kafka`. If the cause is an old or incompatible `kafka_data` volume, `docker compose down -v` and start again |
 | `Waiting for PostgreSQL...` for a long time | `docker compose logs postgres`; port 5432 may already be used by a local PostgreSQL (change the host port in the compose file and set `POSTGRES_PORT`) |
 | `models/model.pkl ... not found` | Run `notebooks/model_training.ipynb` first |
 | Error unpickling `model.pkl` | The scikit-learn version differs from `requirements.txt`; reinstall the pinned versions |
